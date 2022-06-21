@@ -1,7 +1,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -30,9 +30,7 @@ module.exports = {
         unique: true,
       },
       avatar: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: 'anon.png',
+        type: Sequelize.STRING
       },
       role: {
         type: Sequelize.ENUM('customer', 'creator'),
@@ -53,7 +51,7 @@ module.exports = {
         defaultValue: 0,
       },
     })
-      .then(() => queryInterface.addConstraint('Users',  {
+      .then(() => queryInterface.addConstraint('users',  {
         type: 'check',
         fields: ['balance'],
         where: {
@@ -64,6 +62,6 @@ module.exports = {
       }));
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('users');
   },
 };
