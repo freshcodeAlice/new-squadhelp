@@ -1,7 +1,18 @@
-
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('Users', {
+  class User extends Model {
+
+
+    static associate({Order, Participant, Offer, RefreshToken}) {
+        User.hasMany(Order, { foreignKey: 'user_id', targetKey: 'id' });
+        User.hasMany(Participant,
+          { foreignKey: 'user_id', targetKey: 'id' });
+        User.hasMany(Offer, { foreignKey: 'user_id', targetKey: 'id' });
+        }
+  }
+
+  User.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -55,28 +66,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
     },
-  },
-  {
+  },{
+    sequelize,
+    modelName: 'User',
     timestamps: false,
-  });
-
-  User.associate = function (models) {
-    User.hasMany(models.Order, { foreignKey: 'user_id', targetKey: 'id' });
-  };
-
-  User.associate = function (models) {
-    User.hasMany(models.Participant,
-      { foreignKey: 'user_id', targetKey: 'id' });
-  };
-
-  User.associate = function (models) {
-    User.hasMany(models.Offer, { foreignKey: 'user_id', targetKey: 'id' });
-  };
-
-  User.associate = function (models) {
-    User.hasMany(models.RefreshToken,
-      { foreignKey: 'user_id', targetKey: 'id' });
-  };
+  })
 
   return User;
 };
