@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const {promisify} = require('utils');
 const {User} = require('../models');
 const {  ACCESS_TOKEN_TIME,
     ACCESS_TOKEN_SECRET,
@@ -6,16 +7,7 @@ const {  ACCESS_TOKEN_TIME,
     REFRESH_TOKEN_SECRET} = require('../constants');
 
 
-const signJWT = (payload, secret, options) => {
-return new Promise((resolve, reject) => {
-    jwt.sign(payload, secret, options, (err, token) => {
-        if (err) {
-            reject(err)
-        }
-        resolve(token)
-    })
-})
-}
+const signJWT = promisify(jwt.sign);
 
 module.exports.signIn = async (req, res, next) => {
     try{
