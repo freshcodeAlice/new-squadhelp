@@ -1,4 +1,4 @@
-
+const {CONTEST_TYPES, CONTEST_STATUSES} = require('../constants');
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('contests', {
@@ -80,7 +80,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          model: 'users',
           key: 'id',
         },
       },
@@ -88,7 +88,7 @@ module.exports = {
       type: 'check',
       fields: ['prize'],
       where: {
-      mark: {
+        prize: {
         [Sequelize.Op.gte]: 0
       }
       },

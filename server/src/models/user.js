@@ -9,10 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.compare(password, this.getDataValue('password'))
     }
 
-    static associate({Order, Participant, Offer, RefreshToken, Contest, Rating}) {
-        User.hasMany(Order, { foreignKey: 'user_id', targetKey: 'id' });
-        User.hasMany(Participant,
-          { foreignKey: 'user_id', targetKey: 'id' });
+    static associate({Participant, Offer, Contest, Rating}) {
         User.hasMany(Offer, { foreignKey: 'user_id', targetKey: 'id' });
         User.hasMany(Contest,
         { foreignKey: 'userId', targetKey: 'id' });

@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { CONTEST_TYPES } = require('../constants');
+const { CONTEST_TYPES, CONTEST_STATUSES } = require('../constants');
 module.exports = (sequelize, DataTypes) => {
   class Contest extends Model {
 

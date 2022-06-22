@@ -59,7 +59,7 @@ module.exports.getContestById = async (req, res, next) => {
         {
           model: db.Offer,
           required: false,
-          where: req.tokenData.role === CONSTANTS.CREATOR
+          where: req.tokenData.role === CONSTANTS.ROLES.CREATOR
             ? { userId: req.tokenData.userId }
             : {},
           attributes: { exclude: ['userId', 'contestId'] },
@@ -124,7 +124,7 @@ module.exports.updateContest = async (req, res, next) => {
 
 module.exports.setNewOffer = async (req, res, next) => {
   const obj = {};
-  if (req.body.contestType === CONSTANTS.LOGO_CONTEST) {
+  if (req.body.contestType === CONSTANTS.CONTEST_TYPES.LOGO) {
     obj.fileName = req.file.filename;
     obj.originalFileName = req.file.originalname;
   } else {
@@ -147,7 +147,7 @@ module.exports.setNewOffer = async (req, res, next) => {
 
 const rejectOffer = async (offerId, creatorId, contestId) => {
   const rejectedOffer = await contestQueries.updateOffer(
-    { status: CONSTANTS.OFFER_STATUS_REJECTED }, { id: offerId });
+    { status: CONSTANTS.OFFER_STATUSES.REJECTED }, { id: offerId });
   controller.getNotificationController().emitChangeOfferStatus(creatorId,
     'Someone of yours offers was rejected', contestId);
   return rejectedOffer;
@@ -157,10 +157,10 @@ const resolveOffer = async (
   contestId, creatorId, orderId, offerId, priority, transaction) => {
   const finishedContest = await contestQueries.updateContestStatus({
     status: db.sequelize.literal(`   CASE
-            WHEN "id"=${ contestId }  AND "orderId"='${ orderId }' THEN '${ CONSTANTS.CONTEST_STATUS_FINISHED }'
+            WHEN "id"=${ contestId }  AND "orderId"='${ orderId }' THEN '${ CONSTANTS.CONTEST_STATUSES.FINISHED }'
             WHEN "orderId"='${ orderId }' AND "priority"=${ priority +
-    1 }  THEN '${ CONSTANTS.CONTEST_STATUS_ACTIVE }'
-            ELSE '${ CONSTANTS.CONTEST_STATUS_PENDING }'
+    1 }  THEN '${ CONSTANTS.CONTEST_STATUSES.ACTIVE }'
+            ELSE '${ CONSTANTS.CONTEST_STATUSES.PENDING }'
             END
     `),
   }, { orderId }, transaction);
@@ -169,8 +169,8 @@ const resolveOffer = async (
     creatorId, transaction);
   const updatedOffers = await contestQueries.updateOfferStatus({
     status: db.sequelize.literal(` CASE
-            WHEN "id"=${ offerId } THEN '${ CONSTANTS.OFFER_STATUS_WON }'
-            ELSE '${ CONSTANTS.OFFER_STATUS_REJECTED }'
+            WHEN "id"=${ offerId } THEN '${ CONSTANTS.OFFER_STATUSES.WON }'
+            ELSE '${ CONSTANTS.OFFER_STATUSES.REJECTED }'
             END
     `),
   }, {
@@ -179,7 +179,7 @@ const resolveOffer = async (
   transaction.commit();
   const arrayRoomsId = [];
   updatedOffers.forEach(offer => {
-    if (offer.status === CONSTANTS.OFFER_STATUS_REJECTED && creatorId !==
+    if (offer.status === CONSTANTS.OFFER_STATUSES.REJECTED && creatorId !==
       offer.userId) {
       arrayRoomsId.push(offer.userId);
     }

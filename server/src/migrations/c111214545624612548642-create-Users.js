@@ -1,3 +1,5 @@
+const {ROLES} = require('../constants');
+
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
