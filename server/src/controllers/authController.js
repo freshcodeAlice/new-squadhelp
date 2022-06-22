@@ -31,6 +31,12 @@ module.exports.signUp = async (req, res, next) => {
     try {
         const {body} = req;
         const user = await User.create(body);
+        if(user) {
+                // 3. Create token pair
+        // 4. Send tokens to user
+        } else {
+            next(createError(406, 'Can`t create user'))
+        }
     } catch(error) {
         next(error)
     }
