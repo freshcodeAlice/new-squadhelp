@@ -30,8 +30,24 @@ module.exports.signIn = async (req, res, next) => {
 
        const refreshToken = signJWT({}, REFRESH_TOKEN_SECRET, {
         expiresIn: REFRESH_TOKEN_TIME
-       })
+       });
+
+       user.createRefreshToken({
+        value: refreshToken
+       });
         // 4. Send tokens to user
+       res.send(
+        {
+            data: {
+                user,
+                tokens: {
+                    access: accessToken,
+                    refresh: refreshToken
+                }
+            }
+        }
+       )
+
         } else {
             next(createError(403, 'Invalid credentials'))
         }
