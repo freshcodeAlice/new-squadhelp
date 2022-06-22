@@ -16,12 +16,14 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.compare(password, this.getDataValue('password'))
     }
 
-    static associate({Participant, Offer, Contest, Rating}) {
+    static associate({Participant, Offer, Contest, Rating, RefreshToken}) {
         User.hasMany(Offer, { foreignKey: 'user_id', targetKey: 'id' });
         User.hasMany(Contest,
         { foreignKey: 'userId', targetKey: 'id' });
       User.hasMany(Rating,
         { foreignKey: 'userId', targetKey: 'id' });
+        User.hasMany(RefreshToken,
+          { foreignKey: 'userId'});  
         }
   }
 
