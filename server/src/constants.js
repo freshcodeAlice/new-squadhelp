@@ -1,24 +1,52 @@
+const {env: {
+  JWT_SECRET,
+  ACCESS_TOKEN_TIME,
+  SALT_ROUNDS,
+  SQUADHELP_BANK_NUMBER,
+  SQUADHELP_BANK_NAME,
+  SQUADHELP_BANK_CVC,
+  SQUADHELP_BANK_EXPIRY,
+}} = process;
+
+
+
 module.exports = {
-  JWT_SECRET: 'asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4',
-  ACCESS_TOKEN_TIME: 60 * 60,
-  SALT_ROUNDS: 5,
-  SQUADHELP_BANK_NUMBER: '4564654564564564',
-  SQUADHELP_BANK_NAME: 'SquadHelp',
-  SQUADHELP_BANK_CVC: '453',
-  SQUADHELP_BANK_EXPIRY: '11/22',
-  CUSTOMER: 'customer',
-  CREATOR: 'creator',
+  JWT_SECRET,
+  ACCESS_TOKEN_TIME,
+  SALT_ROUNDS,
+  SQUADHELP_BANK_NUMBER,
+  SQUADHELP_BANK_NAME,
+  SQUADHELP_BANK_CVC,
+  SQUADHELP_BANK_EXPIRY,
+
+  ROLES: {
+    CUSTOMER: 'customer',
+    CREATOR: 'creator',
+  },
+  
   CREATOR_ENTRIES: 'creator_entries',
-  CONTEST_STATUS_ACTIVE: 'active',
-  CONTEST_STATUS_FINISHED: 'finished',
-  CONTEST_STATUS_PENDING: 'pending',
+  CONTEST_STATUSES: {
+    ACTIVE: 'active',
+    FINISHED: 'finished',
+    PENDING: 'pending',
+  },
+
+  CONTEST_TYPES: {
+    NAME: 'name', 
+    TAGLINE: 'tagline', 
+    LOGO: 'logo'
+  },
+
   CONTESTS_DEFAULT_DIR: 'public/contestFiles/',
   NAME_CONTEST: 'name',
   LOGO_CONTEST: 'logo',
   TAGLINE_CONTEST: 'tagline',
-  OFFER_STATUS_PENDING: 'pending',
-  OFFER_STATUS_REJECTED: 'rejected',
-  OFFER_STATUS_WON: 'won',
+  OFFER_STATUSES: {
+    PENDING: 'pending',
+    REJECTED: 'rejected',
+    WON: 'won',
+  },
+
   FILES_PATH: 'public/',
   SOCKET_CONNECTION: 'connection',
   SOCKET_SUBSCRIBE: 'subscribe',

@@ -28,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL,
         allowNull: false,
         defaultValue: 0,
+        validate: {
+          min: 0
+        }
       },
     },
     

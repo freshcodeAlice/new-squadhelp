@@ -1,6 +1,6 @@
 const { Model } = require('sequelize');
 const bcrypt = require('bcrypt');
-const {SALT_ROUNDS} = require('../constants');
+const {SALT_ROUNDS, ROLES} = require('../constants');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -9,13 +9,19 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.compare(password, this.getDataValue('password'))
     }
 
-    static associate({Order, Participant, Offer, RefreshToken}) {
+    static associate({Order, Participant, Offer, RefreshToken, Contest, Rating}) {
         User.hasMany(Order, { foreignKey: 'user_id', targetKey: 'id' });
         User.hasMany(Participant,
           { foreignKey: 'user_id', targetKey: 'id' });
         User.hasMany(Offer, { foreignKey: 'user_id', targetKey: 'id' });
+        User.hasMany(Contest,
+        { foreignKey: 'userId', targetKey: 'id' });
+      User.hasMany(Rating,
+        { foreignKey: 'userId', targetKey: 'id' });
         }
   }
+
+
 
   User.init({
     id: {
@@ -55,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     role: {
-      type: DataTypes.ENUM('customer', 'creator'),
+      type: DataTypes.ENUM(...Object.values(ROLES)),
       allowNull: false,
     },
     balance: {

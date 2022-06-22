@@ -2,8 +2,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Rating extends Model {
 
-    static associate (models) {
-     
+    static associate ({User, Offer}) {
+      Rating.belongsTo(User,
+      { foreignKey: 'userId', targetKey: 'id' });
+      Rating.belongsTo(Offer,
+      { foreignKey: 'offerId', targetKey: 'id' });
     }
   }
   Rating.init(

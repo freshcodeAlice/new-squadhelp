@@ -23,13 +23,17 @@ module.exports = {
       mark: {
         type: Sequelize.FLOAT,
         allowNull: false,
-        defaultValue: 0,
-        validate: {
-          min: 0,
-          max: 5,
-        },
+        defaultValue: 0
       },
-    });
+    }).then(() => queryInterface.addConstraint('ratings',  {
+      type: 'check',
+      fields: ['mark'],
+      where: {
+      mark: {
+        [Sequelize.Op.and]: [{ [Sequelize.Op.gte]: 0, }, { [Sequelize.Op.lte]: 5,}],  
+      }
+      },
+    }));
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('ratings');

@@ -33,7 +33,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       role: {
-        type: Sequelize.ENUM('customer', 'creator'),
+        type: Sequelize.ENUM(...Object.values(ROLES)),
         allowNull: false,
       },
       balance: {

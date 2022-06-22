@@ -22,6 +22,7 @@ module.exports = {
         type: Sequelize.DECIMAL,
         allowNull: false,
         defaultValue: 0,
+        
       },
     })
       .then(() => queryInterface.addConstraint('credit_cards', {

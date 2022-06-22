@@ -9,54 +9,54 @@ module.exports = {
       },
       contestType: {
         allowNull: false,
-        type: Sequelize.ENUM('name', 'tagline', 'logo'),
+        type: Sequelize.ENUM(...Object.values(CONTEST_TYPES)),
       },
       fileName: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       originalFileName: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       title: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       typeOfName: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       industry: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       focusOfWork: {
-        allowNull: true,
+
         type: Sequelize.TEXT,
       },
       targetCustomer: {
-        allowNull: true,
+
         type: Sequelize.TEXT,
       },
       styleName: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       nameVenture: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       typeOfTagline: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       status: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(...Object.values(CONTEST_STATUSES)),
       },
       brandStyle: {
-        allowNull: true,
+
         type: Sequelize.STRING,
       },
       prize: {
@@ -64,7 +64,7 @@ module.exports = {
         type: Sequelize.DECIMAL,
       },
       createdAt: {
-        allowNull: true,
+
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
@@ -84,7 +84,15 @@ module.exports = {
           key: 'id',
         },
       },
-    });
+    }).then(() => queryInterface.addConstraint('contests',  {
+      type: 'check',
+      fields: ['prize'],
+      where: {
+      mark: {
+        [Sequelize.Op.gte]: 0
+      }
+      },
+    }));
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('contests');

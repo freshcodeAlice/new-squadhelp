@@ -1,9 +1,16 @@
 const { Model } = require('sequelize');
+const { OFFER_STATUSES } = require('../constants');
 module.exports = (sequelize, DataTypes) => {
   class Offer extends Model {
 
-    static associate (models) {
+    static associate ({User, Contest, Rating}) {
      
+    Offer.belongsTo(User,
+    { foreignKey: 'userId', sourceKey: 'id' });
+    Offer.belongsTo(Contest,
+    { foreignKey: 'contestId', sourceKey: 'id' });
+    Offer.hasOne(Rating,
+    { foreignKey: 'offerId', targetKey: 'id' });
     }
   }
   Offer.init(
@@ -32,9 +39,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       status: {
-        type: DataTypes.STRING,
-        defaultValue: 'pending',
+        type: DataTypes.ENUM(...Object.values(OFFER_STATUSES)),
+        defaultValue: OFFER_STATUSES.PENDING,
       },
+      createdAt: {
+        field: 'created_at',
+        type: DataTypes.DATE,
+        defaultValue: new Date()
+      },
+     updatedAt: {
+      field: 'updated_at',
+        type: DataTypes.DATE,
+        defaultValue: new Date()
+      }
     },
     
     {
