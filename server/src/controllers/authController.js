@@ -1,14 +1,8 @@
 const createError = require('http-errors');
-const {promisify} = require('utils');
+const JwtService = require('../services/jwtService');
 const {User, RefreshToken} = require('../models');
-const {  ACCESS_TOKEN_TIME,
-    ACCESS_TOKEN_SECRET,
-    REFRESH_TOKEN_TIME,
-    REFRESH_TOKEN_SECRET,
-    MAX_DEVICE_AMOUNT} = require('../constants');
 
 
-const signJWT = promisify(jwt.sign);
 
 module.exports.signIn = async (req, res, next) => {
     try{
@@ -20,21 +14,7 @@ module.exports.signIn = async (req, res, next) => {
         // 2. Compare passwords
         if(user && user.comparePassword(password)) {
         // 3. Create token pair
-       const accessToken = signJWT({
-        userId: user.id,
-        email: user.email,
-        role: user.role
-       }, ACCESS_TOKEN_SECRET, {
-        expiresIn: ACCESS_TOKEN_TIME
-       });
-
-       const refreshToken = signJWT({
-        userId: user.id,
-        email: user.email,
-        role: user.role
-       }, REFRESH_TOKEN_SECRET, {
-        expiresIn: REFRESH_TOKEN_TIME
-       });
+      const tokenPair = await JwtService.createTokenPair(user);
 // 3.1 Check device amount
 
 if ((await user.countRefreshTokens()) >= MAX_DEVICE_AMOUNT) {
@@ -79,21 +59,7 @@ module.exports.signUp = async (req, res, next) => {
         const user = await User.create(body);
         if(user) {
                  // 3. Create token pair
-       const accessToken = signJWT({
-        userId: user.id,
-        email: user.email,
-        role: user.role
-       }, ACCESS_TOKEN_SECRET, {
-        expiresIn: ACCESS_TOKEN_TIME
-       });
-
-       const refreshToken = signJWT({
-        userId: user.id,
-        email: user.email,
-        role: user.role
-       }, REFRESH_TOKEN_SECRET, {
-        expiresIn: REFRESH_TOKEN_TIME
-       });
+        const tokenPair = await JwtService.createTokenPair(user);
 
     user.createRefreshToken({
         value: refreshToken
@@ -126,29 +92,15 @@ module.exports.refresh = async (req, res, next) => {
     });
     const user = await refreshTokenInstance.getUser();
 
-                     // 3. Create token pair
-                     const newAccessToken = signJWT({
-                        userId: user.id,
-                        email: user.email,
-                        role: user.role
-                       }, ACCESS_TOKEN_SECRET, {
-                        expiresIn: ACCESS_TOKEN_TIME
-                       });
+     // 3. Create token pair
+     const tokenPair = await JwtService.createTokenPair(user);
                 
-                       const newRefreshToken = signJWT({
-                        userId: user.id,
-                        email: user.email,
-                        role: user.role
-                       }, REFRESH_TOKEN_SECRET, {
-                        expiresIn: REFRESH_TOKEN_TIME
-                       });
-                
-                     await refreshTokenInstance.update({
-                        value: newRefreshToken
-                    })
-                        // 4. Send tokens to user
-                       res.send(
-                        {
+    await refreshTokenInstance.update({
+     value: newRefreshToken
+    })
+ // 4. Send tokens to user
+         res.send(
+          {
                             data: {
                                 user,
                                 tokens: {
