@@ -7,7 +7,7 @@ const router = require('./router');
 const controller = require('./socketInit');
 const handlerError = require('./handlerError/handler');
 
-
+console.log('>>>', process.env);
 
 const PORT = process.env.PORT || 3000;
 const app = express();

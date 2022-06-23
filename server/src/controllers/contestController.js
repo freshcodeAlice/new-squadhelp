@@ -159,8 +159,8 @@ const resolveOffer = async (
     status: db.sequelize.literal(`   CASE
             WHEN "id"=${ contestId }  AND "orderId"='${ orderId }' THEN '${ CONSTANTS.CONTEST_STATUSES.FINISHED }'
             WHEN "orderId"='${ orderId }' AND "priority"=${ priority +
-    1 }  THEN '${ CONSTANTS.CONTEST_STATUSES.ACTIVE }'
-            ELSE '${ CONSTANTS.CONTEST_STATUSES.PENDING }'
+    1 }  THEN '${ CONSTANTS.CONTEST_STATUSES.ACTIVE }'::"enum_contests_status"
+            ELSE '${ CONSTANTS.CONTEST_STATUSES.PENDING }'::"enum_contests_status"
             END
     `),
   }, { orderId }, transaction);
@@ -169,8 +169,8 @@ const resolveOffer = async (
     creatorId, transaction);
   const updatedOffers = await contestQueries.updateOfferStatus({
     status: db.sequelize.literal(` CASE
-            WHEN "id"=${ offerId } THEN '${ CONSTANTS.OFFER_STATUSES.WON }'
-            ELSE '${ CONSTANTS.OFFER_STATUSES.REJECTED }'
+            WHEN "id"=${ offerId } THEN '${ CONSTANTS.OFFER_STATUSES.WON }'::"enum_offers_status"
+            ELSE '${ CONSTANTS.OFFER_STATUSES.REJECTED }'::"enum_offers_status"
             END
     `),
   }, {
