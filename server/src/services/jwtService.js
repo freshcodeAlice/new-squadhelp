@@ -1,4 +1,4 @@
-const {promisify} = require('utils');
+const {promisify} = require('util');
 const jwt = require('jsonwebtoken');
 const {  ACCESS_TOKEN_TIME,
     ACCESS_TOKEN_SECRET,
