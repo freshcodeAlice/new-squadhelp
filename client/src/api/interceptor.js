@@ -9,9 +9,9 @@ const httpClient = axios.create({
 let accessToken;
 
 httpClient.interceptors.request.use((config) => {
-  const token = window.localStorage.getItem(CONTANTS.REFRESH_TOKEN);
-  if (token) {
-    config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
+
+  if (accessToken) {
+    config.headers = { ...config.headers, Authorization: `Bearer ${accessToken}` };
   }
   return config;
 }, (err) => Promise.reject(err));
@@ -23,10 +23,15 @@ httpClient.interceptors.response.use((response) => {
   return response;
 }, (err) => {
   if (err.response.status === 419) {
-   // todo: refresh
+  const refreshToken = window.localStorage.getItem(CONTANTS.REFRESH_TOKEN);
+  const {data: {data: {tokenPair: {access, refresh}}}} = httpClient.post('/auth/refresh', {refreshToken});
+  window.localStorage.setItem(CONTANTS.REFRESH_TOKEN, refresh);
+  accessToken = access;
+  err.config.headers.Authorization = `Bearer ${access}`;
+  return axios.request(err.config);
   }
   if (err.response.status === 401) {
-   // todo: redirect user to login/signup page
+    history.replace('/login');
   }
   return Promise.reject(err);
 });
