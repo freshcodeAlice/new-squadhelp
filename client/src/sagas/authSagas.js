@@ -6,9 +6,9 @@ import * as restController from '../api/rest/restController';
 export function* loginSaga(action) {
   yield put({ type: ACTION.AUTH_ACTION_REQUEST });
   try {
-    yield restController.loginRequest(action.data);
+    const {data: {data: {user: payload}}} = yield restController.loginRequest(action.data);
     action.history.replace('/');
-    yield put({ type: ACTION.AUTH_ACTION_SUCCESS });
+    yield put({ type: ACTION.AUTH_ACTION_SUCCESS, payload }); // GET USER DATA
   } catch (err) {
     yield put({ type: ACTION.AUTH_ACTION_ERROR, error: err.response });
   }

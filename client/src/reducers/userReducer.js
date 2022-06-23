@@ -1,4 +1,5 @@
 import ACTION from '../actions/actionTypes';
+// No need to userReducer at all, logic moves to authReducer
 
 const initialState = {
   isFetching: true,
@@ -8,30 +9,30 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case ACTION.GET_USER_REQUEST: {
-      return {
-        ...state,
-        isFetching: true,
-        error: null,
-        data: null,
-      };
-    }
-    case ACTION.GET_USER_SUCCESS: {
-      return {
-        ...state,
-        isFetching: false,
-        error: null,
-        data: action.data,
-      };
-    }
-    case ACTION.GET_USER_ERROR: {
-      return {
-        ...state,
-        isFetching: false,
-        error: action.error,
-        data: null,
-      };
-    }
+    // case ACTION.GET_USER_REQUEST: {
+    //   return {
+    //     ...state,
+    //     isFetching: true,
+    //     error: null,
+    //     data: null,
+    //   };
+    // }
+    // case ACTION.GET_USER_SUCCESS: {
+    //   return {
+    //     ...state,
+    //     isFetching: false,
+    //     error: null,
+    //     data: action.data,
+    //   };
+    // }
+    // case ACTION.GET_USER_ERROR: {
+    //   return {
+    //     ...state,
+    //     isFetching: false,
+    //     error: action.error,
+    //     data: null,
+    //   };
+    // }
     case ACTION.CLEAR_USER_STORE: {
       return {
         ...state,
