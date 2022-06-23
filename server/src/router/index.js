@@ -10,7 +10,7 @@ const upload = require('../utils/fileUpload');
 const router = express.Router();
 const authRouter = require('./authRouter');
 
-router.use('/api', authRouter);
+router.use('/auth', authRouter);
 
 router.post(
   '/registration',
