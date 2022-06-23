@@ -15,12 +15,20 @@ router.post(
   hashPass,
   userController.registration,
 );
+/* TODO: переписать логику фронта так, чтобы 
+не делать второй (лишний) запрос на инфу о юзере */
 
 router.post(
   '/login',
   validators.validateLogin,
   userController.login,
 );
+
+router.post(
+  '/getUser',
+  checkToken.checkAuth,
+); 
+
 
 router.post(
   '/dataForContest',
@@ -58,10 +66,6 @@ router.post(
   contestController.getContests,
 );
 
-router.post(
-  '/getUser',
-  checkToken.checkAuth,
-);
 
 router.get(
   '/downloadFile/:fileName',

@@ -77,7 +77,7 @@ module.exports.canSendOffer = async (req, res, next) => {
       return next(new RightsError());
     }
   } catch (e) {
-    next(new ServerError());
+    next(new ServerError(e));
   }
 
 };
@@ -96,7 +96,7 @@ module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
     }
     next();
   } catch (e) {
-    next(new ServerError());
+    next(new ServerError(e));
   }
 };
 
@@ -114,7 +114,7 @@ module.exports.canUpdateContest = async (req, res, next) => {
     }
     next();
   } catch (e) {
-    next(new ServerError());
+    next(new ServerError(e));
   }
 };
 
