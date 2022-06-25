@@ -41,12 +41,10 @@ module.exports = {
         defaultValue: OFFER_STATUSES.PENDING,
       },
       createdAt: {
-        field: 'created_at',
         type: Sequelize.DATE,
         defaultValue: new Date()
       },
      updatedAt: {
-      field: 'updated_at',
         type: Sequelize.DATE,
         defaultValue: new Date()
       }

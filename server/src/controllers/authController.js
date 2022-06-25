@@ -8,9 +8,9 @@ module.exports.signIn = async (req, res, next) => {
         const user = await User.findOne({
         where: {email}
         });
-        if(user && user.comparePassword(password)) {
+        if(user && (await user.comparePassword(password))) {
             const data = await AuthService.createSession(user);
-            res.send({data})
+            return res.status(201).send({ data });
         } else {
             next(createError(403, 'Invalid credentials'))
         }
@@ -25,7 +25,7 @@ module.exports.signUp = async (req, res, next) => {
         const user = await User.create(body);
         if(user) {
         const data = await AuthService.createSession(user);
-        res.send({data})
+        return res.status(201).send({ data });
     } else {
      next(createError(406, 'Can`t create user'))
     }
@@ -36,13 +36,20 @@ module.exports.signUp = async (req, res, next) => {
 
 module.exports.refresh = async (req, res, next) => {
     try {
-    const {body: {refreshToken}} = req; // надеемся, что refreshToken не сдох еще
-    const refreshTokenInstance = await RefreshToken.findOne({
-        where: {value: refreshToken}
-    });
-    const data = await AuthService.refreshSession(refreshTokenInstance);
-    res.send({data})
-} catch(error) {
-    next(error)
-}
-}
+      const {
+        body: { refreshToken }, // refresh token is not expired
+      } = req;
+  
+      const refreshTokenInstance = await RefreshToken.findOne({
+        where: { value: refreshToken },
+      });
+  
+      if (!refreshTokenInstance) {
+        return next(createError(404, 'Token not found'));
+      }
+      const data = await AuthService.refreshSession(refreshTokenInstance);
+      res.status(201).send({ data });
+    } catch (error) {
+      next(error);
+    }
+  };

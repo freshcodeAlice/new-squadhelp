@@ -32,6 +32,9 @@ export default function (state = initialState, action) {
     case ACTION.CLEAR_PREFERENCE: {
       return initialState;
     }
+    case ACTION.CLEAR_STORE:{
+      return {...initialState}
+  }
     default:
       return state;
   }

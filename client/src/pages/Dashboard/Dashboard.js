@@ -19,6 +19,6 @@ const Dashboard = (props) => {
   );
 };
 
-const mapStateToProps = (state) => state.userStore.data;
+const mapStateToProps = (state) => state.auth.user;
 
 export default connect(mapStateToProps)(Dashboard);

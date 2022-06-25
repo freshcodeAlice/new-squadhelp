@@ -1,6 +1,5 @@
 const {ROLES, SALT_ROUNDS} = require('../constants');
 const bcrypt = require('bcrypt');
-console.log('>>>>>>>>>>>>>>>', SALT_ROUNDS)
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
@@ -10,7 +9,7 @@ module.exports = {
           lastName: 'Customerovich',
           displayName: 'Cus',
           password: bcrypt.hashSync('Test12345', SALT_ROUNDS),
-          email: 'qwerty@customer',
+          email: 'qwerty@customer.com',
           role: ROLES.CUSTOMER
      },
      {
@@ -18,7 +17,7 @@ module.exports = {
           lastName: 'Creatorovich',
           displayName: 'Cret',
           password: bcrypt.hashSync('Test54321', SALT_ROUNDS),
-          email: 'qwerty@creator',
+          email: 'qwerty@creator.com',
           role: ROLES.CREATOR
      }
       ], {});

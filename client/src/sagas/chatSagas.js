@@ -2,12 +2,12 @@ import { put, select } from 'redux-saga/effects';
 import remove from 'lodash/remove';
 import isEqual from 'lodash/isEqual';
 import ACTION from '../actions/actionTypes';
-import * as restController from '../api/rest/restController';
+import * as restController from '../api/http/restController';
 
 export function* previewSaga() {
   try {
     const { data } = yield restController.getPreviewChat();
-    yield put({ type: ACTION.GET_PREVIEW_CHAT, data });
+    yield put({ type: ACTION.GET_PREVIEW_CHAT, data: data });
   } catch (err) {
     yield put({ type: ACTION.GET_PREVIEW_CHAT_ERROR, error: err.response });
   }
@@ -16,7 +16,7 @@ export function* previewSaga() {
 export function* getDialog(action) {
   try {
     const { data } = yield restController.getDialog(action.data);
-    yield put({ type: ACTION.GET_DIALOG_MESSAGES, data });
+    yield put({ type: ACTION.GET_DIALOG_MESSAGES, data: data });
   } catch (err) {
     yield put({ type: ACTION.GET_DIALOG_MESSAGES_ERROR, error: err.response });
   }
@@ -85,7 +85,7 @@ export function* changeChatBlock(action) {
 export function* getCatalogListSaga(action) {
   try {
     const { data } = yield restController.getCatalogList(action.data);
-    yield put({ type: ACTION.RECEIVE_CATALOG_LIST, data });
+    yield put({ type: ACTION.RECEIVE_CATALOG_LIST, data: data });
   } catch (err) {
     yield put({ type: ACTION.RECEIVE_CATALOG_LIST_ERROR, error: err.response });
   }

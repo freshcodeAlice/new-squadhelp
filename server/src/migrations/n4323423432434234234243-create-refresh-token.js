@@ -2,7 +2,13 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
       return queryInterface.createTable('refresh_tokens', {
-        userId: {        
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        userId: {      
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
@@ -19,6 +25,14 @@ module.exports = {
           },
           fingerprint:{
             type: Sequelize.STRING,
+          },
+          createdAt: {
+            allowNull: false,
+            type: Sequelize.DATE
+          },
+          updatedAt: {
+            allowNull: false,
+            type: Sequelize.DATE
           }
       });
     },

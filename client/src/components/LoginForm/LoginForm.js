@@ -9,11 +9,11 @@ import Error from '../Error/Error';
 
 class LoginForm extends React.Component {
   componentWillUnmount() {
-    this.props.authClear();
+    // this.props.authClear();
   }
 
     clicked = (values) => {
-      this.props.loginRequest({ data: values, history: this.props.history });
+      this.props.loginRequest(values);
     };
 
     render() {
@@ -84,7 +84,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => (
   {
-    loginRequest: ({ data, history }) => dispatch(authActionLogin(data, history)),
+    loginRequest: (data) => dispatch(authActionLogin(data)),
     authClear: () => dispatch(clearAuth()),
   }
 );

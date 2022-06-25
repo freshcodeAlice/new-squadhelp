@@ -13,8 +13,13 @@ export default function (state = initialState, action) {
       };
     }
     case ACTION.CLEAR_CONTEST_STORE: {
-      return { ...initialState };
+      return { 
+        contests: {}
+       };
     }
+    case ACTION.CLEAR_STORE:{
+      return {...initialState}
+  }
     default:
       return state;
   }

@@ -3,35 +3,24 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
-import { getUserAction, clearUserStore, headerRequest } from '../../actions/actionCreator';
+import { clearUserStore, headerRequest } from '../../actions/actionCreator';
 
 class Header extends React.Component {
-  componentDidMount() {
-    if (!this.props.data) {
-      this.props.getUser();
-    }
-  }
 
     logOut = () => {
-      localStorage.clear();
       this.props.clearUserStore();
       this.props.history.replace('/login');
     };
 
-    startContests = () => {
-      this.props.history.push('/startContest');
-    };
-
     renderLoginButtons = () => {
-      if (this.props.data) {
+      if (this.props.user) {
         return (
           <>
             <div className={styles.userInfo}>
-              <img
-                src={this.props.data.avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${this.props.data.avatar}`}
-                alt="user"
-              />
-              <span>{`Hi, ${this.props.data.displayName}`}</span>
+            <img
+                src={this.props.user.avatar ? `${CONSTANTS.publicURL}${this.props.user.avatar}` : CONSTANTS.ANONYM_IMAGE_PATH }
+                alt='user'/>
+              <span>{`Hi, ${this.props.user.displayName}`}</span>
               <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
               <ul>
                 <li>
@@ -188,8 +177,8 @@ class Header extends React.Component {
                   </li>
                 </ul>
               </div>
-              {this.props.data && this.props.data.role !== CONSTANTS.CREATOR
-                        && <div className={styles.startContestBtn} onClick={this.startContests}>START CONTEST</div>}
+              {this.props.user && this.props.user.role !== CONSTANTS.CREATOR
+                        && <div className={styles.startContestBtn}>  <Link to='/startContest'>START CONTEST</Link></div>}
             </div>
           </div>
         </div>
@@ -197,9 +186,8 @@ class Header extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => state.userStore;
+const mapStateToProps = (state) => state.auth;
 const mapDispatchToProps = (dispatch) => ({
-  getUser: () => dispatch(headerRequest()),
   clearUserStore: () => dispatch(clearUserStore()),
 });
 

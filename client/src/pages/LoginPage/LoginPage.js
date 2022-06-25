@@ -7,7 +7,13 @@ import styles from './LoginPage.module.sass';
 import { clearErrorSignUpAndLogin } from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
 
-const LoginPage = (props) => (
+const LoginPage = (props) => {
+  
+  const changeRoute = () => {
+    props.history.replace('/');
+  };
+  
+    return (
   <div className={styles.mainContainer}>
     <div className={styles.loginContainer}>
       <div className={styles.headerSignUpPage}>
@@ -22,11 +28,13 @@ const LoginPage = (props) => (
         </div>
       </div>
       <div className={styles.loginFormContainer}>
-        <LoginForm history={props.history} />
+        <LoginForm changeRoute={ changeRoute } />
       </div>
     </div>
   </div>
 );
+
+};
 
 const mapDispatchToProps = (dispatch) => ({
   clearError: () => dispatch(clearErrorSignUpAndLogin()),

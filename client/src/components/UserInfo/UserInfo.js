@@ -15,20 +15,16 @@ const UserInfo = (props) => {
     props.updateUser(formData);
   };
 
-  const { isEdit, changeEditMode, data } = props;
+  const { isEdit, changeEditMode, user } = props;
   const {
     avatar, firstName, lastName, displayName, email, role, balance,
-  } = data;
+  } = user;
   return (
     <div className={styles.mainContainer}>
       {isEdit ? <UpdateUserInfoForm onSubmit={updateUserData} />
         : (
           <div className={styles.infoContainer}>
-            <img
-              src={avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`}
-              className={styles.avatar}
-              alt="user"
-            />
+          <img src={avatar ? `${CONSTANTS.publicURL}${avatar}`: CONSTANTS.ANONYM_IMAGE_PATH } className={styles.avatar} alt='user'/>
             <div className={styles.infoContainer}>
               <div className={styles.infoBlock}>
                 <span className={styles.label}>First Name</span>
@@ -70,9 +66,9 @@ const UserInfo = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { data } = state.userStore;
+  const { user } = state.auth;
   const { isEdit } = state.userProfile;
-  return { data, isEdit };
+  return { user, isEdit };
 };
 
 const mapDispatchToProps = (dispatch) => ({

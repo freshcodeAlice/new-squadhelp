@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate({Offer, Contest, Rating, RefreshToken}) {
-        User.hasMany(Offer, { foreignKey: 'user_id', targetKey: 'id' });
+        User.hasMany(Offer, { foreignKey: 'userId', targetKey: 'id' });
         User.hasMany(Contest,
         { foreignKey: 'userId', targetKey: 'id' });
       User.hasMany(Rating,
@@ -28,12 +28,6 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   User.init({
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER,
-    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -49,12 +43,6 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      // set(password) {
-      //   bcrypt.hash(password, SALT_ROUNDS, (err, hashedPass) => {
-      //     if(err) {throw err};
-      //     this.setDataValue('password', hashedPass);
-      //   })
-      // }
     },
     email: {
       type: DataTypes.STRING,
@@ -76,10 +64,6 @@ module.exports = (sequelize, DataTypes) => {
         min: 0,
       },
     },
-    accessToken: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
     rating: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -88,8 +72,7 @@ module.exports = (sequelize, DataTypes) => {
   },{
     sequelize,
     modelName: 'User',
-    tableName: 'users',
-    timestamps: false,
+    tableName: 'users'
   })
 
   User.beforeCreate(hashPassword);

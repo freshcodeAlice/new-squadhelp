@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router';
 import styles from './ContestCreationPage.module.sass';
 import { saveContestToStore, clearDataForContest } from '../../actions/actionCreator';
 import NextButton from '../../components/NextButton/NextButton';
@@ -10,22 +11,15 @@ import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 
 const ContestCreationPage = (props) => {
-  const formRef = useRef();
-  const contestData = props.contestStore.contests[props.contestType] ? props.contestStore.contests[props.contestType] : { contestType: props.contestType };
+  const history = useHistory()
 
-  const handleSubmit = (values) => {
-    props.saveContest({ type: props.contestType, info: values });
-    const route = props.bundleStore.bundle[props.contestType] === 'payment' ? '/payment' : `${props.bundleStore.bundle[props.contestType]}Contest`;
-    props.history.push(route);
-  };
+  const submitDataContest = (values) => {
+    props.saveContest({type: props.contestType, info: values});
+    history.push(props.bundleStore.bundle[props.contestType] === 'payment' ? '/payment' : props.bundleStore.bundle[props.contestType] + 'Contest');
+};
 
-  const submitForm = () => {
-    if (formRef.current) {
-      formRef.current.handleSubmit();
-    }
-  };
-
-  !props.bundleStore.bundle && props.history.replace('/startContest');
+!props.bundleStore.bundle && history.replace('/startContest');
+const contestData = props.contestStore.contests[props.contestType] ? props.contestStore.contests[props.contestType] : {contestType: props.contestType};
 
   return (
     <div>
@@ -42,20 +36,16 @@ const ContestCreationPage = (props) => {
         <ProgressBar currentStep={2} />
       </div>
       <div className={styles.container}>
-        <div className={styles.formContainer}>
-          <ContestForm
-            contestType={props.contestType}
-            handleSubmit={handleSubmit}
-            formRef={formRef}
-            defaultData={contestData}
-          />
-        </div>
+      <div className={styles.formContainer}>
+                    <ContestForm contestType={props.contestType} submitData={submitDataContest}
+                                 defaultData={contestData}/>
+                </div>
       </div>
       <div className={styles.footerButtonsContainer}>
         <div className={styles.lastContainer}>
           <div className={styles.buttonsContainer}>
             <BackButton />
-            <NextButton submit={submitForm} />
+            <NextButton />
           </div>
         </div>
       </div>

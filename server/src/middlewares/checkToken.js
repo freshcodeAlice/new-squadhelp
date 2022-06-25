@@ -5,8 +5,9 @@ const userQueries =require('../controllers/queries/userQueries');
 
 module.exports.checkAuth = async (req, res, next) => {
   const {headers: {authorization}} = req; // 'Bearer kj2hkh23k4jh23k4jh32kjh4kj2332k3j4hk23'
-  const [,accessToken] = authorization.split(' ');
-  if (!accessToken) {
+  if(authorization) {
+    const [,accessToken] = authorization.split(' ');
+  } else {
     return next(new TokenError('need token'));
   }
   try {

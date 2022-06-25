@@ -11,6 +11,10 @@ import CONSTANTS from '../../constants';
 const RegistrationPage = (props) => {
   props.clearError();
 
+  const changeRoute = () => {
+    props.history.replace('/');
+  };
+
   return (
     <div className={styles.signUpPage}>
       <div className={styles.signUpContainer}>
@@ -25,7 +29,7 @@ const RegistrationPage = (props) => {
             </Link>
           </div>
         </div>
-        <RegistrationForm history={props.history} />
+        <RegistrationForm changeRoute={ changeRoute } />
       </div>
       <div className={styles.footer}>
         <div className={styles.articlesMainContainer}>

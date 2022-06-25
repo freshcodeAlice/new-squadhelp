@@ -14,8 +14,11 @@ export default function (state = initialState, action) {
     case ACTION.CLEAR_BUNDLE_ACTION: {
       return {
         bundle: null,
-      };
+      }
     }
+    case ACTION.CLEAR_STORE:{
+      return {...initialState}
+  }
     default:
       return state;
   }

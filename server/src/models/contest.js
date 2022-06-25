@@ -105,7 +105,6 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Contest',
       tableName: 'contests',
-      underscored: true,
       timestamps: false,
     }
   );
