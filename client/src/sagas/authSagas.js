@@ -8,7 +8,7 @@ export function* loginSaga(action) {
   try {
     const {data: {data: {user}}} = yield Api.auth.login(action.data);
     yield put({ type: ACTION.AUTH_ACTION_SUCCESS, user });
-    history.replace('/');
+    // history.replace('/');
   } catch (err) {
     yield put({ type: ACTION.AUTH_ACTION_ERROR, error: err.response });
   }
@@ -23,7 +23,7 @@ export function* registerSaga(action) {
       }
     } = yield Api.auth.signUp(action.data);
     yield put({ type: ACTION.AUTH_ACTION_SUCCESS, user });
-    history.replace('/');
+    // history.replace('/');
   } catch (e) {
     yield put({ type: ACTION.AUTH_ACTION_ERROR, error: e.response });
   }
@@ -47,5 +47,5 @@ export function * refreshSaga (action) {
 export function * logoutSaga (action) {
   yield Api.auth.logout();
   yield put({ type: ACTION.CLEAR_STORE })
-  history.replace('/login')
+  // history.replace('/login')
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import Logo from '../../components/Logo';
@@ -8,10 +8,16 @@ import { clearErrorSignUpAndLogin } from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
 
 const LoginPage = (props) => {
+  const {user} = props.auth;
   
   const changeRoute = () => {
     props.history.replace('/');
   };
+
+  if(user) {
+    return <Redirect to='/' />
+  }
+
   
     return (
   <div className={styles.mainContainer}>
@@ -36,8 +42,10 @@ const LoginPage = (props) => {
 
 };
 
+const mapStateToProps = ({auth}) => ({auth});
+
 const mapDispatchToProps = (dispatch) => ({
   clearError: () => dispatch(clearErrorSignUpAndLogin()),
 });
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

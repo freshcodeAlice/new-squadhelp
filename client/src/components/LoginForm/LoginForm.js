@@ -6,18 +6,17 @@ import styles from './LoginForm.module.sass';
 import FormInput from '../FormInput/FormInput';
 import Schems from '../../validators/validationSchems';
 import Error from '../Error/Error';
+import { Redirect } from 'react-router-dom';
 
 class LoginForm extends React.Component {
-  componentWillUnmount() {
-    // this.props.authClear();
-  }
 
     clicked = (values) => {
       this.props.loginRequest(values);
     };
 
     render() {
-      const { error, isFetching } = this.props.auth;
+
+      const { error, isFetching} = this.props.auth;
       const { submitting, authClear } = this.props;
 
       const formInputClasses = {
