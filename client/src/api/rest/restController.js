@@ -40,3 +40,6 @@ export const getContestById = (data) => http.get('getContestById', {
     contestId: data.contestId,
   },
 });
+
+
+export const getUserTransactions = () => http.get('/transactions');
