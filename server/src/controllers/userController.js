@@ -140,8 +140,14 @@ module.exports.payment = async (req, res, next) => {
         prize,
       });
     });
-    await bd.Contests.bulkCreate(req.body.contests, transaction);
+    await bd.Contests.bulkCreate(req.body.contests, transaction); // return created Contests
     transaction.commit();
+    await createPaymentTransaction({
+      userId: req.tokenData.userId,
+      title: 'Contest payment',
+      amount: req.body.price,
+      status: false
+    });
     res.send();
   } catch (err) {
     transaction.rollback();
@@ -198,6 +204,13 @@ module.exports.cashout = async (req, res, next) => {
     },
     transaction);
     transaction.commit();
+
+   await createPaymentTransaction({
+      userId: req.tokenData.userId,
+      title: 'Cashout',
+      amount: req.body.sum,
+      status: false
+    });
     res.send({ balance: updatedUser.balance });
   } catch (err) {
     transaction.rollback();
@@ -206,3 +219,29 @@ module.exports.cashout = async (req, res, next) => {
 };
 
 
+module.exports.createPaymentTransaction = async ({userId, title, amount, status}) => {
+    try {
+    await bd.Transaction.create({
+      date: new Date(),
+      userId,
+      title,
+      amount,
+      status
+    });
+  } catch(error) {
+    next(error);
+  }
+}
+
+module.exports.getUserTransactions = async (req, res, next) => {
+  try {
+    const userTransactions = await bd.Transaction.findAll({
+      where: {
+        userId: req.tokenData.userId
+      }
+    });
+    res.status(200).send({data: userTransactions})
+  } catch(error) {
+    next(error);
+  }
+}

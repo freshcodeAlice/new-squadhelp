@@ -16,6 +16,12 @@ router.post(
   userController.registration,
 );
 
+router.get(
+  '/transactions',
+  checkToken.checkToken,
+  userController.getUserTransactions,
+);
+
 router.post(
   '/login',
   validators.validateLogin,

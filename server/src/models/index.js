@@ -33,6 +33,8 @@ db[ 'Users' ].hasMany(db[ 'Contests' ],
   { foreignKey: 'userId', targetKey: 'id' });
 db[ 'Users' ].hasMany(db[ 'Ratings' ],
   { foreignKey: 'userId', targetKey: 'id' });
+  db[ 'Users' ].hasMany(db[ 'Transactions' ],
+  { foreignKey: 'userId', targetKey: 'id' });
 
 db[ 'Offers' ].belongsTo(db[ 'Users' ],
   { foreignKey: 'userId', sourceKey: 'id' });
@@ -45,6 +47,8 @@ db[ 'Ratings' ].belongsTo(db[ 'Users' ],
   { foreignKey: 'userId', targetKey: 'id' });
 db[ 'Ratings' ].belongsTo(db[ 'Offers' ],
   { foreignKey: 'offerId', targetKey: 'id' });
+
+  Transaction.associate(db); 
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

@@ -5,6 +5,7 @@ const userQueries = require('./queries/userQueries');
 const controller = require('../socketInit');
 const UtilFunctions = require('../utils/functions');
 const CONSTANTS = require('../constants');
+const {createPaymentTransaction} = require('./userController')
 
 module.exports.dataForContest = async (req, res, next) => {
   const response = {};
@@ -177,6 +178,14 @@ const resolveOffer = async (
     contestId,
   }, transaction);
   transaction.commit();
+
+  await createPaymentTransaction({
+    userId: creatorId,
+    title: 'Offer prize',
+    amount: finishedContest.prize,
+    status: true
+  });
+
   const arrayRoomsId = [];
   updatedOffers.forEach(offer => {
     if (offer.status === CONSTANTS.OFFER_STATUS_REJECTED && creatorId !==
@@ -207,6 +216,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
       const winningOffer = await resolveOffer(req.body.contestId,
         req.body.creatorId, req.body.orderId, req.body.offerId,
         req.body.priority, transaction);
+       
       res.send(winningOffer);
     } catch (err) {
       transaction.rollback();
