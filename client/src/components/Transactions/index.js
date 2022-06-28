@@ -5,6 +5,17 @@ const Transations = (props) => {
 
     const {data} = props;
 
+    const tableBody = data ? data.map(({date, title, status, amount}) => {
+        return (
+            <tr>
+                <td>{date}</td>
+                <td>{title}</td>
+                <td>{status}</td>
+                <td>{amount}</td>
+            </tr>
+        )
+    }) : "There is no transactions here";
+
 
     return (
         <div>
@@ -24,10 +35,10 @@ const Transations = (props) => {
                             Transaction Amount
                         </td>
                     </th>
-                    {/* {data && data.map(transObject => {
-
-                    })} */}
                 </thead>
+                <tbody>
+                    {tableBody}
+                </tbody>
             </table>
         </div>
     )
